@@ -1,10 +1,10 @@
 /**
- * Basic chat with the official @tonia/sdk client.
+ * Basic chat with the official @tonia-router/sdk client.
  *
  *   export TONIA_API_KEY=tonia_sk_…
  *   npx tsx 01-basic-chat.ts
  */
-import { Tonia } from "@tonia/sdk";
+import { Tonia } from "@tonia-router/sdk";
 
 const client = new Tonia({
   apiKey: process.env.TONIA_API_KEY,
@@ -16,7 +16,7 @@ const client = new Tonia({
 
 const { data } = await client.models.list();
 if (!data[0]) {
-  throw new Error("empty allowlist — do not guess a model id");
+  throw new Error("this key has no models; check the profile allowlist in the portal");
 }
 
 const completion = await client.chat.completions.create({

@@ -52,7 +52,7 @@ with Tonia(
     listed = client.models.list()
     ids = [model["id"] for model in listed["data"]]
     if not ids:
-        raise SystemExit("empty allowlist — do not guess a model id")
+        raise SystemExit("this key has no models; check the profile allowlist in the portal")
     model = ids[0]
 
     # Stand-in for your database. Pass does not store this for the SDK.

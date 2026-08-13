@@ -5,13 +5,13 @@
  *   export TONIA_API_KEY=tonia_sk_…
  *   npx tsx 04-policy-block.ts
  */
-import { PolicyBlockError, Tonia } from "@tonia/sdk";
+import { PolicyBlockError, Tonia } from "@tonia-router/sdk";
 
 const client = new Tonia({ apiKey: process.env.TONIA_API_KEY });
 
 const { data } = await client.models.list();
 if (!data[0]) {
-  throw new Error("empty allowlist — do not guess a model id");
+  throw new Error("this key has no models; check the profile allowlist in the portal");
 }
 
 try {

@@ -1,5 +1,5 @@
 {
-  "name": "@tonia/sdk-examples",
+  "name": "@tonia-router/sdk-examples",
   "private": true,
   "type": "module",
   "engines": {

@@ -7,7 +7,7 @@
  *   export TONIA_API_KEY=tonia_sk_…
  *   npx tsx 09-saas-integrator.ts
  */
-import { EntitlementError, RateLimitError, Tonia } from "@tonia/sdk";
+import { EntitlementError, RateLimitError, Tonia } from "@tonia-router/sdk";
 
 const client = new Tonia({
   apiKey: process.env.TONIA_API_KEY,
@@ -19,7 +19,7 @@ const client = new Tonia({
 
 const { data } = await client.models.list();
 if (!data[0]) {
-  throw new Error("empty allowlist — do not guess a model id");
+  throw new Error("this key has no models; check the profile allowlist in the portal");
 }
 const model = data[0].id;
 

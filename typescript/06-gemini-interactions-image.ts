@@ -4,7 +4,7 @@
  *   export TONIA_API_KEY=tonia_sk_…
  *   npx tsx 06-gemini-interactions-image.ts
  */
-import { InvalidRequestError, Tonia } from "@tonia/sdk";
+import { InvalidRequestError, Tonia } from "@tonia-router/sdk";
 
 type ImagePart = { type?: unknown; mime_type?: unknown; data?: unknown };
 

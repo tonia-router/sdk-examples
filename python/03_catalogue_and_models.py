@@ -19,4 +19,5 @@ with Tonia() as public_client:
 with Tonia(api_key=os.environ.get("TONIA_API_KEY")) as client:
     runtime = client.models.list()
     print("runtime models:", len(runtime.get("data", [])))
+    # Bearer / OpenAI-shaped ids. x-api-key listing looks different.
     print("last_limits:", client.last_limits)

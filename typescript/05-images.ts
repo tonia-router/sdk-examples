@@ -6,7 +6,7 @@
  *   export TONIA_API_KEY=tonia_sk_…
  *   npx tsx 05-images.ts
  */
-import { Tonia } from "@tonia/sdk";
+import { Tonia } from "@tonia-router/sdk";
 
 const client = new Tonia({
   apiKey: process.env.TONIA_API_KEY,

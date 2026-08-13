@@ -1,4 +1,4 @@
-"""Honor admission 429. The SDK does not auto-retry.
+"""Handle admission 429. The SDK does not auto-retry.
 
     export TONIA_API_KEY=tonia_sk_…
     python 07_rate_limit_retry.py
@@ -30,7 +30,7 @@ with Tonia(api_key=os.environ["TONIA_API_KEY"]) as client:
     listed = client.models.list()
     ids = [model["id"] for model in listed["data"]]
     if not ids:
-        raise SystemExit("empty allowlist — do not guess a model id")
+        raise SystemExit("this key has no models; check the profile allowlist in the portal")
     model = ids[0]
     try:
         print(once(client, model))

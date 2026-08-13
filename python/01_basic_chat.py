@@ -21,7 +21,7 @@ with Tonia(
     listed = client.models.list()
     ids = [model["id"] for model in listed["data"]]
     if not ids:
-        raise SystemExit("empty allowlist — do not guess a model id")
+        raise SystemExit("this key has no models; check the profile allowlist in the portal")
     completion = client.chat.completions.create(
         model=ids[0],
         messages=[{"role": "user", "content": "Bonjour — une phrase courte."}],

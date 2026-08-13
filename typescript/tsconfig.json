@@ -7,7 +7,7 @@
     "noEmit": true,
     "skipLibCheck": true,
     "paths": {
-      "@tonia/sdk": ["../../typescript-sdk/src/index.ts"]
+      "@tonia-router/sdk": ["../../typescript-sdk/src/index.ts"]
     }
   },
   "include": ["*.ts"]
