@@ -1,5 +1,5 @@
 /**
- * Gemini image generate + edit on /v1/interactions (not Path A).
+ * Gemini image generate + edit on `/v1/interactions`.
  *
  *   export TONIA_API_KEY=tonia_sk_…
  *   npx tsx 06-gemini-interactions-image.ts
@@ -50,7 +50,7 @@ if (!GEMINI_IMAGE) {
 
 try {
   await client.images.generate({ model: GEMINI_IMAGE, prompt: "Draw a red fox" });
-  throw new Error("expected provider_requires_surface on Path A");
+  throw new Error("expected provider_requires_surface on /v1/images");
 } catch (err) {
   if (!(err instanceof InvalidRequestError) || err.code !== "provider_requires_surface") {
     throw err;

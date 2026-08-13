@@ -1,4 +1,4 @@
-"""Gemini image generate + edit on /v1/interactions (not Path A).
+"""Gemini image generate + edit on `/v1/interactions`.
 
     export TONIA_API_KEY=tonia_sk_…
     python 06_gemini_interactions_image.py
@@ -60,7 +60,7 @@ with Tonia(
         raise SystemExit("no Gemini image SKU on this key")
     try:
         client.images.generate(model=gemini_image, prompt="Draw a red fox")
-        raise SystemExit("expected provider_requires_surface on Path A")
+        raise SystemExit("expected provider_requires_surface on /v1/images")
     except InvalidRequestError as err:
         if err.code != "provider_requires_surface":
             raise

@@ -1,9 +1,9 @@
-"""Path A image generate (openai / xAI / StepFun).
+"""Image generate on `/v1/images/generations`.
 
 Gemini image SKUs must use 06_gemini_interactions_image.py instead.
 
     export TONIA_API_KEY=tonia_sk_…
-    python 05_images_path_a.py
+    python 05_images.py
 """
 
 from __future__ import annotations
@@ -32,7 +32,7 @@ with Tonia(
         None,
     )
     if not model:
-        raise SystemExit("no Path A image SKU on this key")
+        raise SystemExit("no image SKU for /v1/images on this key")
     image = client.images.generate(
         model=model,
         prompt="Draw a red fox",

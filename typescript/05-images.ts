@@ -1,10 +1,10 @@
 /**
- * Path A image generate (openai / xAI / StepFun).
+ * Image generate on `/v1/images/generations`.
  *
  * Gemini image SKUs must use 06-gemini-interactions-image.ts instead.
  *
  *   export TONIA_API_KEY=tonia_sk_…
- *   npx tsx 05-images-path-a.ts
+ *   npx tsx 05-images.ts
  */
 import { Tonia } from "@tonia/sdk";
 
@@ -21,7 +21,7 @@ const model = models.find(
   (item) => /^(openai|xai|stepfun)\//.test(item.id) && /image/i.test(item.id),
 )?.id;
 if (!model) {
-  throw new Error("no Path A image SKU on this key");
+  throw new Error("no image SKU for /v1/images on this key");
 }
 
 const image = (await client.images.generate({
