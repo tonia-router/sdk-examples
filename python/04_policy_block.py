@@ -1,7 +1,7 @@
 """Handle a policy block, then retry after a redact-mode profile in the portal.
 
     export TONIA_API_KEY=tonia_sk_…
-    python 05_policy_block.py
+    python 04_policy_block.py
 """
 
 from __future__ import annotations
@@ -12,15 +12,20 @@ import sys
 from tonia import PolicyBlockError, Tonia
 
 with Tonia(api_key=os.environ["TONIA_API_KEY"]) as client:
+    listed = client.models.list()
+    ids = [model["id"] for model in listed["data"]]
+    if not ids:
+        raise SystemExit("empty allowlist — do not guess a model id")
     try:
         client.chat.completions.create(
-            model="openai/gpt-4.1-mini",
+            model=ids[0],
             messages=[{"role": "user", "content": "…"}],
         )
     except PolicyBlockError as err:
-        print("Blocked by policy.", file=sys.stderr)
+        print("Request blocked by Workspace Policies.", file=sys.stderr)
         print(
-            "Configure a redact-mode profile in the portal, bind this key, then retry.",
+            "Ask a Workspace admin to bind this key to a redact-mode profile "
+            "(Policies → Profiles), then retry.",
             file=sys.stderr,
         )
         print(err.policy_block, file=sys.stderr)

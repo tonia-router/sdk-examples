@@ -12,8 +12,12 @@ import os
 from tonia import Tonia
 
 with Tonia(api_key=os.environ["TONIA_API_KEY"]) as client:
+    listed = client.models.list()
+    ids = [model["id"] for model in listed["data"]]
+    if not ids:
+        raise SystemExit("empty allowlist — do not guess a model id")
     for event in client.chat.completions.stream(
-        model="openai/gpt-4.1-mini",
+        model=ids[0],
         messages=[{"role": "user", "content": "Compte jusqu’à 5."}],
     ):
         if event.data == "[DONE]":

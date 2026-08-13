@@ -18,8 +18,12 @@ with Tonia(
         "X-Tonia-Title": "sdk-examples",
     },
 ) as client:
+    listed = client.models.list()
+    ids = [model["id"] for model in listed["data"]]
+    if not ids:
+        raise SystemExit("empty allowlist — do not guess a model id")
     completion = client.chat.completions.create(
-        model="openai/gpt-4.1-mini",
+        model=ids[0],
         messages=[{"role": "user", "content": "Bonjour — une phrase courte."}],
     )
     print(json.dumps(completion, indent=2, ensure_ascii=False))

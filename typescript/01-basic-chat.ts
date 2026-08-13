@@ -14,8 +14,13 @@ const client = new Tonia({
   },
 });
 
+const { data } = await client.models.list();
+if (!data[0]) {
+  throw new Error("empty allowlist — do not guess a model id");
+}
+
 const completion = await client.chat.completions.create({
-  model: "openai/gpt-4.1-mini",
+  model: data[0].id,
   messages: [{ role: "user", content: "Bonjour — une phrase courte." }],
 });
 
