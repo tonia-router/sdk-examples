@@ -18,11 +18,12 @@ if you copy these examples.
 | Streaming | [`typescript/02-streaming.ts`](typescript/02-streaming.ts) | [`python/02_streaming.py`](python/02_streaming.py) |
 | Catalogue + models | [`typescript/03-catalogue-and-models.ts`](typescript/03-catalogue-and-models.ts) | [`python/03_catalogue_and_models.py`](python/03_catalogue_and_models.py) |
 | Policy block → portal redact | [`typescript/04-policy-block.ts`](typescript/04-policy-block.ts) | [`python/04_policy_block.py`](python/04_policy_block.py) |
-| Images (`/v1/images`) | [`typescript/05-images.ts`](typescript/05-images.ts) | [`python/05_images.py`](python/05_images.py) |
+| Images (`/v1/images`, tenant `size`) | [`typescript/05-images.ts`](typescript/05-images.ts) | [`python/05_images.py`](python/05_images.py) |
 | Gemini image gen/edit (`/v1/interactions`) | [`typescript/06-gemini-interactions-image.ts`](typescript/06-gemini-interactions-image.ts) | [`python/06_gemini_interactions_image.py`](python/06_gemini_interactions_image.py) |
 | Rate limit → follow `Retry-After` | [`typescript/07-rate-limit-retry.ts`](typescript/07-rate-limit-retry.ts) | [`python/07_rate_limit_retry.py`](python/07_rate_limit_retry.py) |
 | LLM tools passthrough | [`typescript/08-tools-passthrough.ts`](typescript/08-tools-passthrough.ts) | [`python/08_tools_passthrough.py`](python/08_tools_passthrough.py) |
 | SaaS integrator (history, usage, limits) | [`typescript/09-saas-integrator.ts`](typescript/09-saas-integrator.ts) | [`python/09_saas_integrator.py`](python/09_saas_integrator.py) |
+| Audio speech / transcriptions (+ Gemini Interactions) | [`typescript/10-audio.ts`](typescript/10-audio.ts) | [`python/10_audio.py`](python/10_audio.py) |
 
 ## Run locally (before packages are published)
 
