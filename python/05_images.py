@@ -33,10 +33,35 @@ def is_meta_image(model_id: str) -> bool:
     return model_id.lower().startswith("muse-image")
 
 
-def is_path_a_image(model_id: str) -> bool:
+def is_alibaba_image(model_id: str) -> bool:
+    lowered = model_id.lower()
+    return lowered.startswith("qwen-image") or model_id.startswith("alibaba_qwen/")
+
+
+def _caps(item: dict[str, object]) -> list[str]:
+    raw = item.get("capabilities")
+    return [str(cap) for cap in raw] if isinstance(raw, list) else []
+
+
+def _surface(item: dict[str, object]) -> dict[str, object]:
+    raw = item.get("surface")
+    return raw if isinstance(raw, dict) else {}
+
+
+def is_path_a_image(item: dict[str, object]) -> bool:
+    model_id = str(item["id"])
     if "turbo" in model_id.lower() or is_gemini_image(model_id):
         return False
-    return is_openai_image(model_id) or is_xai_image(model_id) or is_meta_image(model_id)
+    if _surface(item).get("path") == "/v1/images/generations":
+        return True
+    if "image_generation" in _caps(item):
+        return True
+    return (
+        is_openai_image(model_id)
+        or is_xai_image(model_id)
+        or is_meta_image(model_id)
+        or is_alibaba_image(model_id)
+    )
 
 
 with Tonia(
@@ -49,7 +74,7 @@ with Tonia(
     },
 ) as client:
     listed = client.models.list()
-    path_a = [item["id"] for item in listed["data"] if is_path_a_image(item["id"])]
+    path_a = [item["id"] for item in listed["data"] if is_path_a_image(item)]
     model = next((item_id for item_id in path_a if is_meta_image(item_id)), None)
     if model is None:
         model = next(

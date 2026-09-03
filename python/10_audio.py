@@ -4,7 +4,7 @@
     python 10_audio.py
 
 Sold A1 examples: mistral/voxtral-mini-tts-2603, openai/gpt-transcribe.
-Never gpt-4o-mini-tts. Gemini token TTS/STT uses interactions.create.
+Gemini token TTS/STT uses interactions.create.
 Workspace audio must be on (portal /dlp).
 """
 
@@ -18,10 +18,24 @@ from io import BytesIO
 
 from tonia import Tonia
 
+_BARE_FISH = frozenset({"s2.1-pro", "s2.1-pro-free"})
+
 
 def _skip(model_id: str) -> bool:
     lowered = model_id.lower()
-    return any(part in lowered for part in ("latest", "vd-", "realtime", "mini-tts"))
+    if lowered in _BARE_FISH:
+        return True
+    return any(part in lowered for part in ("-latest", "vd-", "realtime"))
+
+
+def _caps(item: dict[str, object]) -> list[str]:
+    raw = item.get("capabilities")
+    return [str(cap) for cap in raw] if isinstance(raw, list) else []
+
+
+def _surface(item: dict[str, object]) -> dict[str, object]:
+    raw = item.get("surface")
+    return raw if isinstance(raw, dict) else {}
 
 
 def _tiny_wav() -> bytes:
@@ -43,52 +57,37 @@ with Tonia(
 ) as client:
     listed = client.models.list()
     rows = [item for item in listed["data"] if not _skip(item["id"])]
-    ids = [item["id"] for item in rows]
-
-    def caps(item: dict[str, object]) -> list[str]:
-        raw = item.get("capabilities")
-        return [str(cap) for cap in raw] if isinstance(raw, list) else []
 
     tts = next(
         (
             item["id"]
             for item in rows
-            if "audio_speech" in caps(item)
+            if (
+                _surface(item).get("path") == "/v1/audio/speech"
+                or "audio_speech" in _caps(item)
+            )
             and not item["id"].startswith("gemini/")
         ),
-        next(
-            (
-                model_id
-                for model_id in ids
-                if "tts" in model_id.lower() and "gemini" not in model_id.lower()
-            ),
-            None,
-        ),
+        None,
     )
     stt = next(
         (
             item["id"]
             for item in rows
-            if "audio_transcription" in caps(item)
+            if (
+                _surface(item).get("path") == "/v1/audio/transcriptions"
+                or "audio_transcription" in _caps(item)
+            )
             and not item["id"].startswith("gemini/")
         ),
-        next(
-            (
-                model_id
-                for model_id in ids
-                if any(part in model_id.lower() for part in ("transcribe", "whisper", "asr"))
-                and "tts" not in model_id.lower()
-                and "gemini" not in model_id.lower()
-            ),
-            None,
-        ),
+        None,
     )
     gemini_audio = next(
         (
-            model_id
-            for model_id in ids
-            if model_id.startswith("gemini/")
-            and ("tts" in model_id.lower() or "transcribe" in model_id.lower())
+            item["id"]
+            for item in rows
+            if item["id"].startswith("gemini/")
+            and _surface(item).get("family") in ("speech", "transcription")
         ),
         None,
     )
@@ -97,7 +96,8 @@ with Tonia(
 
     spent: dict[str, object] = {}
     if tts:
-        speech = client.audio.speech.create(model=tts, input="Bonjour Tonia", voice="alloy")
+        speech_voice = "" if tts.startswith("fish_") or "s2.1-pro" in tts else "alloy"
+        speech = client.audio.speech.create(model=tts, input="Bonjour Tonia", voice=speech_voice)
         spent["speech"] = {
             "model": tts,
             "kind": "bytes" if isinstance(speech, (bytes, bytearray)) else "json",

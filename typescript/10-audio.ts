@@ -5,13 +5,17 @@
  *   npx tsx 10-audio.ts
  *
  * Sold A1 examples: mistral/voxtral-mini-tts-2603, openai/gpt-transcribe.
- * Never gpt-4o-mini-tts. Gemini token TTS/STT uses interactions.create.
+ * Gemini token TTS/STT uses interactions.create.
  * Workspace audio must be on (portal /dlp).
  */
 import { Tonia } from "@tonia-router/sdk";
 
+const BARE_FISH = new Set(["s2.1-pro", "s2.1-pro-free"]);
+
 function skip(id: string): boolean {
-  return /latest|vd-|realtime|mini-tts/i.test(id);
+  const lowered = id.toLowerCase();
+  if (BARE_FISH.has(lowered)) return true;
+  return /-latest|vd-|realtime/i.test(id);
 }
 
 function tinyWav(): Uint8Array {
@@ -33,24 +37,27 @@ const client = new Tonia({
 
 const { data } = await client.models.list();
 const rows = data.filter((item) => !skip(item.id));
-const ids = rows.map((item) => item.id);
 const caps = (item: (typeof rows)[number]) => item.capabilities ?? [];
+const surfaceOf = (item: (typeof rows)[number]) => item.surface ?? {};
 
-const tts =
-  rows.find((item) => caps(item).includes("audio_speech") && !item.id.startsWith("gemini/"))
-    ?.id ??
-  ids.find((id) => /tts/i.test(id) && !/gemini/i.test(id));
-const stt =
-  rows.find(
-    (item) => caps(item).includes("audio_transcription") && !item.id.startsWith("gemini/"),
-  )?.id ??
-  ids.find(
-    (id) =>
-      (/transcribe|whisper|asr/i.test(id) && !/tts/i.test(id) && !/gemini/i.test(id)),
-  );
-const geminiAudio = ids.find(
-  (id) => id.startsWith("gemini/") && (/tts/i.test(id) || /transcribe/i.test(id)),
-);
+const tts = rows.find(
+  (item) =>
+    (surfaceOf(item).path === "/v1/audio/speech" ||
+      caps(item).includes("audio_speech")) &&
+    !item.id.startsWith("gemini/"),
+)?.id;
+const stt = rows.find(
+  (item) =>
+    (surfaceOf(item).path === "/v1/audio/transcriptions" ||
+      caps(item).includes("audio_transcription")) &&
+    !item.id.startsWith("gemini/"),
+)?.id;
+const geminiAudio = rows.find(
+  (item) =>
+    item.id.startsWith("gemini/") &&
+    (surfaceOf(item).family === "speech" ||
+      surfaceOf(item).family === "transcription"),
+)?.id;
 
 if (!tts && !stt && !geminiAudio) {
   throw new Error("no listed audio on this key");
@@ -61,7 +68,7 @@ if (tts) {
   const speech = await client.audio.speech.create({
     model: tts,
     input: "Bonjour Tonia",
-    voice: "alloy",
+    voice: tts.startsWith("fish_") || tts.includes("s2.1-pro") ? "" : "alloy",
   });
   spent.speech = {
     model: tts,

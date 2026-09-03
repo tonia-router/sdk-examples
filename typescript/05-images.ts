@@ -27,9 +27,16 @@ function isMetaImage(id: string): boolean {
   return /^muse-image/i.test(id);
 }
 
-function isPathAImage(id: string): boolean {
+function isAlibabaImage(id: string): boolean {
+  return /^qwen-image/i.test(id) || id.startsWith("alibaba_qwen/");
+}
+
+function isPathAImage(item: { id: string; capabilities?: string[]; surface?: { path?: string } }): boolean {
+  const id = item.id;
   if (/turbo/i.test(id) || isGeminiImage(id)) return false;
-  return isOpenAIImage(id) || isXaiImage(id) || isMetaImage(id);
+  if (item.surface?.path === "/v1/images/generations") return true;
+  if (item.capabilities?.includes("image_generation")) return true;
+  return isOpenAIImage(id) || isXaiImage(id) || isMetaImage(id) || isAlibabaImage(id);
 }
 
 const client = new Tonia({
@@ -42,7 +49,7 @@ const client = new Tonia({
 });
 
 const { data: models } = await client.models.list();
-const pathA = models.map((item) => item.id).filter(isPathAImage);
+const pathA = models.filter(isPathAImage).map((item) => item.id);
 const model =
   pathA.find(isMetaImage) ??
   pathA.find((id) => isXaiImage(id) && !/quality/i.test(id)) ??
