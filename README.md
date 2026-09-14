@@ -30,6 +30,7 @@ if you copy these examples.
 | Live / realtime (`wss /v1/realtime`, `gpt-live-1`) | [`typescript/14-realtime.ts`](typescript/14-realtime.ts) | [`python/14_realtime.py`](python/14_realtime.py) |
 | Native Live PCM (`mode=native`, `output_audio.delta`) | [`typescript/15-live-native.ts`](typescript/15-live-native.ts) | [`python/15_live_native.py`](python/15_live_native.py) |
 | Native Live **mic** (DEV full duplex) | [`live-mic/`](live-mic/) — `python live-mic/serve.py` then http://127.0.0.1:8765 | Latency HUD + `python live-mic/measure.py` (DEV; `--prod` when ready) |
+| Live STT (`gemini-3.5-transcribe-live`, PCM 16 kHz) | [`typescript/16-gemini-transcribe-live.ts`](typescript/16-gemini-transcribe-live.ts) | [`python/16_gemini_transcribe_live.py`](python/16_gemini_transcribe_live.py) |
 
 ## Run locally (before packages are published)
 
