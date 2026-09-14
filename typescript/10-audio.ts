@@ -38,25 +38,25 @@ const client = new Tonia({
 const { data } = await client.models.list();
 const rows = data.filter((item) => !skip(item.id));
 const caps = (item: (typeof rows)[number]) => item.capabilities ?? [];
-const surfaceOf = (item: (typeof rows)[number]) => item.surface ?? {};
+const surfaceOf = (item: (typeof rows)[number]) => item.surface;
 
 const tts = rows.find(
   (item) =>
-    (surfaceOf(item).path === "/v1/audio/speech" ||
+    (surfaceOf(item)?.path === "/v1/audio/speech" ||
       caps(item).includes("audio_speech")) &&
     !item.id.startsWith("gemini/"),
 )?.id;
 const stt = rows.find(
   (item) =>
-    (surfaceOf(item).path === "/v1/audio/transcriptions" ||
+    (surfaceOf(item)?.path === "/v1/audio/transcriptions" ||
       caps(item).includes("audio_transcription")) &&
     !item.id.startsWith("gemini/"),
 )?.id;
 const geminiAudio = rows.find(
   (item) =>
     item.id.startsWith("gemini/") &&
-    (surfaceOf(item).family === "speech" ||
-      surfaceOf(item).family === "transcription"),
+    (surfaceOf(item)?.family === "speech" ||
+      surfaceOf(item)?.family === "transcription"),
 )?.id;
 
 if (!tts && !stt && !geminiAudio) {

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>tonia Live mic (DEV)</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">DEV · native Live · gpt-live-1</p>
+      <h1>Talk to tonia</h1>
+      <p class="lede">
+        Full duplex on tonia <code>wss /v1/realtime</code>. Your mic and the
+        model can speak at the same time. This is not Ask / clavarde. Reconnect
+        starts a new billed session.
+      </p>
+
+      <label>
+        Workspace key
+        <input id="api-key" type="password" autocomplete="off" placeholder="tonia_sk_…" />
+      </label>
+      <label>
+        Pass base
+        <input id="base-url" type="url" />
+      </label>
+
+      <div class="row">
+        <button id="start" type="button">Start</button>
+        <button id="stop" type="button" disabled>Stop</button>
+        <meter id="meter" min="0" max="1" value="0"></meter>
+        <span id="status">idle</span>
+      </div>
+      <p class="session">
+        The call is recorded in this browser. Stop to download your mic, the
+        model, and a stereo mix. Nothing is uploaded.
+      </p>
+      <div id="takes" class="takes" hidden>
+        <p id="take-meta" class="session"></p>
+        <div class="row">
+          <a id="dl-mix" class="dl">Download mix</a>
+          <a id="dl-mic" class="dl">Download mic</a>
+          <a id="dl-model" class="dl">Download model</a>
+          <a id="dl-captions" class="dl">Download captions</a>
+        </div>
+      </div>
+      <p id="session" class="session"></p>
+      <dl id="latency" class="latency">
+        <div>
+          <dt>Reply</dt>
+          <dd id="lat-reply">—</dd>
+        </div>
+        <div>
+          <dt>Pass hop</dt>
+          <dd id="lat-pass">—</dd>
+        </div>
+        <div>
+          <dt>Queue</dt>
+          <dd id="lat-queue">—</dd>
+        </div>
+        <div>
+          <dt>Path</dt>
+          <dd id="lat-path">—</dd>
+        </div>
+      </dl>
+      <p id="latency-note" class="session">
+        Reply is speech → first audio (lab + WAN). Pass hop is copy time on
+        Pass — expect a few ms. Queue growing is choke.
+      </p>
+
+      <section>
+        <h2>Captions</h2>
+        <pre id="captions"></pre>
+      </section>
+
+      <section id="delegation" hidden>
+        <h2>Delegation</h2>
+        <p>The model handed work back. Call Pass REST, then send the result.</p>
+        <input id="delegation-id" readonly />
+        <textarea id="delegation-text" rows="3" placeholder="Result to speak"></textarea>
+        <button id="delegation-send" type="button">Send result</button>
+      </section>
+
+      <pre id="log" class="log"></pre>
+    </main>
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>

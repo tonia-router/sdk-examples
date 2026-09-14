@@ -3,6 +3,7 @@
  *
  * Send the tenant dial (`1k` / `2k` / `4k`) or OpenAI `size`.
  * Pass maps each lab. Do not send `resolution` or `image_size`.
+ * Image 2 maps `2k` to `1536x1024`. Image 2.5 `2k` is `2048x2048`.
  *
  * Gemini image SKUs must use 06-gemini-interactions-image.ts instead.
  *
@@ -17,6 +18,22 @@ function isGeminiImage(id: string): boolean {
 
 function isOpenAIImage(id: string): boolean {
   return id.startsWith("openai/") || /^gpt-image/i.test(id);
+}
+
+function isGptImage25(id: string): boolean {
+  return /gpt-image-2\.5/i.test(id);
+}
+
+function isFlare(id: string): boolean {
+  return /gpt-image-2\.5-flare/i.test(id);
+}
+
+function isSunburst(id: string): boolean {
+  return /gpt-image-2\.5-sunburst/i.test(id);
+}
+
+function isImage2(id: string): boolean {
+  return /gpt-image-2(?!\.5)/i.test(id);
 }
 
 function isXaiImage(id: string): boolean {
@@ -51,6 +68,9 @@ const client = new Tonia({
 const { data: models } = await client.models.list();
 const pathA = models.filter(isPathAImage).map((item) => item.id);
 const model =
+  pathA.find(isFlare) ??
+  pathA.find(isSunburst) ??
+  pathA.find(isImage2) ??
   pathA.find(isMetaImage) ??
   pathA.find((id) => isXaiImage(id) && !/quality/i.test(id)) ??
   pathA.find(isXaiImage) ??
@@ -59,7 +79,7 @@ if (!model) {
   throw new Error("no image SKU for /v1/images on this key");
 }
 
-/** Tenant dial. Pass maps OpenAI `2k` to billed WxH. */
+/** Tenant dial. Image 2 maps 2k to 1536x1024. Image 2.5 2k is 2048x2048. */
 const size = "2k";
 
 const image = (await client.images.generate({
@@ -67,6 +87,7 @@ const image = (await client.images.generate({
   prompt: "Draw a red fox",
   n: 1,
   size,
+  ...(isGptImage25(model) ? { quality: "auto" as const } : {}),
 })) as { data?: unknown[] };
 
 console.log(

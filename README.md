@@ -18,12 +18,18 @@ if you copy these examples.
 | Streaming | [`typescript/02-streaming.ts`](typescript/02-streaming.ts) | [`python/02_streaming.py`](python/02_streaming.py) |
 | Catalogue + models | [`typescript/03-catalogue-and-models.ts`](typescript/03-catalogue-and-models.ts) | [`python/03_catalogue_and_models.py`](python/03_catalogue_and_models.py) |
 | Policy block → portal redact | [`typescript/04-policy-block.ts`](typescript/04-policy-block.ts) | [`python/04_policy_block.py`](python/04_policy_block.py) |
-| Images (`/v1/images`, tenant `size`) | [`typescript/05-images.ts`](typescript/05-images.ts) | [`python/05_images.py`](python/05_images.py) |
+| Agent block → portal Agent controls | [`typescript/13-agent-block.ts`](typescript/13-agent-block.ts) | [`python/13_agent_block.py`](python/13_agent_block.py) |
+| Images (`/v1/images`, tenant `size`; prefers Flare) | [`typescript/05-images.ts`](typescript/05-images.ts) | [`python/05_images.py`](python/05_images.py) |
 | Gemini image gen/edit (`/v1/interactions`) | [`typescript/06-gemini-interactions-image.ts`](typescript/06-gemini-interactions-image.ts) | [`python/06_gemini_interactions_image.py`](python/06_gemini_interactions_image.py) |
 | Rate limit → follow `Retry-After` | [`typescript/07-rate-limit-retry.ts`](typescript/07-rate-limit-retry.ts) | [`python/07_rate_limit_retry.py`](python/07_rate_limit_retry.py) |
 | LLM tools passthrough | [`typescript/08-tools-passthrough.ts`](typescript/08-tools-passthrough.ts) | [`python/08_tools_passthrough.py`](python/08_tools_passthrough.py) |
 | SaaS integrator (history, usage, limits) | [`typescript/09-saas-integrator.ts`](typescript/09-saas-integrator.ts) | [`python/09_saas_integrator.py`](python/09_saas_integrator.py) |
 | Audio speech / transcriptions (+ Gemini Interactions) | [`typescript/10-audio.ts`](typescript/10-audio.ts) | [`python/10_audio.py`](python/10_audio.py) |
+| Embeddings (`/v1/embeddings`, tenant `input`) | [`typescript/11-embeddings.ts`](typescript/11-embeddings.ts) | [`python/11_embeddings.py`](python/11_embeddings.py) |
+| Rerank (`/v1/rerank`, tenant `query` + `documents`) | [`typescript/12-rerank.ts`](typescript/12-rerank.ts) | [`python/12_rerank.py`](python/12_rerank.py) |
+| Live / realtime (`wss /v1/realtime`, `gpt-live-1`) | [`typescript/14-realtime.ts`](typescript/14-realtime.ts) | [`python/14_realtime.py`](python/14_realtime.py) |
+| Native Live PCM (`mode=native`, `output_audio.delta`) | [`typescript/15-live-native.ts`](typescript/15-live-native.ts) | [`python/15_live_native.py`](python/15_live_native.py) |
+| Native Live **mic** (DEV full duplex) | [`live-mic/`](live-mic/) — `python live-mic/serve.py` then http://127.0.0.1:8765 | Latency HUD + `python live-mic/measure.py` (DEV; `--prod` when ready) |
 
 ## Run locally (before packages are published)
 
