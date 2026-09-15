@@ -1,6 +1,6 @@
 const RATE = 24_000;
 const CHUNK_SAMPLES = 2400;
-const DEFAULT_BASE = "https://pass-dev.tonia.ca:8443";
+const DEFAULT_BASE = "https://pass.tonia.ca:8443";
 
 const els = {
   key: document.getElementById("api-key"),
@@ -96,7 +96,7 @@ function renderLatency() {
   const hop = passHops.length ? passHops[passHops.length - 1] : null;
   const hopMid = median(passHops);
   els.latPass.textContent =
-    hop == null ? "await promote" : `${Math.round(hop)}${hopMid != null ? ` · p50 ${Math.round(hopMid)}` : ""}`;
+    hop == null ? "—" : `${Math.round(hop)}${hopMid != null ? ` · p50 ${Math.round(hopMid)}` : ""}`;
   const queued = queueMs();
   els.latQueue.textContent = `${Math.round(queued)} ms`;
   const choke = queued > 1500;
@@ -282,14 +282,16 @@ function finishTake() {
   }
   revokeTakes();
   const base = stamp();
-  bindDownload(els.dlMix, pcm16Wav(mix.samples, 2), `${base}-mix.wav`);
-  bindDownload(els.dlMic, pcm16Wav(mic, 1), `${base}-mic.wav`);
-  bindDownload(els.dlModel, pcm16Wav(model, 1), `${base}-model.wav`);
-  bindDownload(
-    els.dlCaptions,
-    new Blob([els.captions.textContent || ""], { type: "text/plain;charset=utf-8" }),
-    `${base}-captions.txt`,
-  );
+  const mixBlob = pcm16Wav(mix.samples, 2);
+  const micBlob = pcm16Wav(mic, 1);
+  const modelBlob = pcm16Wav(model, 1);
+  const captionBlob = new Blob([els.captions.textContent || ""], {
+    type: "text/plain;charset=utf-8",
+  });
+  bindDownload(els.dlMix, mixBlob, `${base}-mix.wav`);
+  bindDownload(els.dlMic, micBlob, `${base}-mic.wav`);
+  bindDownload(els.dlModel, modelBlob, `${base}-model.wav`);
+  bindDownload(els.dlCaptions, captionBlob, `${base}-captions.txt`);
   els.takeMeta.textContent = `${seconds.toFixed(1)} s · stereo mix is you left, model right`;
   els.takes.hidden = false;
   log(`saved ${seconds.toFixed(1)} s locally`);

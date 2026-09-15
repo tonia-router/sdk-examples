@@ -1,10 +1,10 @@
-"""DEV full-duplex Live mic. Serves the UI and proxies tonia wss.
+"""Full-duplex Live mic. Serves the UI and proxies tonia wss.
 
-    /Users/flxpro/Desktop/Tonia/.venv/bin/python serve.py
+    python serve.py
     open http://127.0.0.1:8765
 
-Paste a Workspace tonia_ key. Default Pass is pass-dev.tonia.ca:8443.
-The browser never talks to api.openai.com. Ask / clavarde has no mic.
+Paste a Workspace tonia_ key. Default Pass is pass.tonia.ca:8443.
+The browser never talks to api.openai.com.
 Reconnect is a new billed session.
 """
 
@@ -17,17 +17,18 @@ import time
 from pathlib import Path
 from urllib.parse import urlencode, urlsplit, urlunsplit
 
+from starlette.responses import FileResponse
+
 log = logging.getLogger("live-mic")
 
 from starlette.applications import Starlette
-from starlette.responses import FileResponse
 from starlette.routing import Route, WebSocketRoute
 from starlette.websockets import WebSocket, WebSocketDisconnect
 
 ROOT = Path(__file__).resolve().parent
 HOST = "127.0.0.1"
 PORT = 8765
-DEFAULT_BASE = "https://pass-dev.tonia.ca:8443"
+DEFAULT_BASE = "https://pass.tonia.ca:8443"
 REALTIME_PATH = "/v1/realtime"
 LOCAL_DATA_PORT = "8444"
 LOCAL_REALTIME_PORT = "8448"
@@ -86,7 +87,7 @@ def _upstream_error(exc: Exception) -> dict[str, object]:
     message = {
         401: "key refused — check the tonia_ key and Live tab",
         400: code.replace("_", " "),
-        403: "DEV edge refused this network (operator CIDR)",
+        403: "Pass refused this network or key",
         429: "rate limited — wait and retry",
     }.get(int(status or 0), str(exc)[:180])
     return {

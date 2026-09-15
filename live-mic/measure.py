@@ -1,14 +1,11 @@
-"""Native Live latency + choke check. tonia wss only. Never the lab.
+"""Native Live latency + choke check. tonia wss only.
 
-    cd /Users/flxpro/Desktop/Tonia
-    set -a && source PLANS/02-architecture/e2e/.env.dev && set +a
-    .venv/bin/python tonia-router/sdk-examples/live-mic/measure.py
+    export TONIA_API_KEY=tonia_sk_…
+    python measure.py
+    python measure.py --dev
 
-    # PROD only after native is promoted:
-    .venv/bin/python tonia-router/sdk-examples/live-mic/measure.py --prod
-
-Needs TONIA_API_KEY or PASS_ROSTER_MANAGED_REDACT_BEARER. Do not print the key.
-Reconnect is a new billed session. Ask / clavarde has no mic.
+Needs TONIA_API_KEY. Do not print the key.
+Reconnect is a new billed session.
 """
 
 from __future__ import annotations
@@ -33,7 +30,7 @@ from serve import DEFAULT_BASE, realtime_connect_url  # noqa: E402
 RATE = 24_000
 CHUNK_MS = 100
 PROD_BASE = "https://pass.tonia.ca:8443"
-DEV_BASE = DEFAULT_BASE
+DEV_BASE = "https://pass-dev.tonia.ca:8443"
 # Pass copy should stay a couple of milliseconds. 25ms p95 is already fat.
 PASS_HOP_P95_LIMIT_MS = 25
 # Audio arriving more than this behind its own duration is a choke.
@@ -80,11 +77,7 @@ def verdict(report: dict[str, Any]) -> str:
 
 
 def _bearer() -> str:
-    return (
-        os.environ.get("TONIA_API_KEY")
-        or os.environ.get("PASS_ROSTER_MANAGED_REDACT_BEARER")
-        or ""
-    ).strip()
+    return (os.environ.get("TONIA_API_KEY") or "").strip()
 
 
 def _error_code(payload: dict[str, Any]) -> str | None:
@@ -277,7 +270,8 @@ def _self_check() -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Native Live latency + choke check")
-    parser.add_argument("--prod", action="store_true", help="pass.tonia.ca — only after native PROD")
+    parser.add_argument("--dev", action="store_true", help="pass-dev.tonia.ca")
+    parser.add_argument("--prod", action="store_true", help="pass.tonia.ca (default)")
     parser.add_argument("--base-url", default="", help="Override Pass HTTPS base")
     parser.add_argument("--seconds", type=float, default=12.0)
     parser.add_argument("--timeout", type=float, default=20.0)
@@ -285,7 +279,10 @@ def main() -> int:
     args = parser.parse_args()
     if args.self_check:
         return _self_check()
-    base = args.base_url.strip() or (PROD_BASE if args.prod else DEV_BASE)
+    if args.dev and args.prod:
+        print("refuse: --dev and --prod together", file=sys.stderr)
+        return 1
+    base = args.base_url.strip() or (DEV_BASE if args.dev else PROD_BASE)
     if args.prod and "pass-dev" in base:
         print("refuse: --prod with a DEV base", file=sys.stderr)
         return 1
