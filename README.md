@@ -8,8 +8,8 @@ id from that allowlist. That list is Bearer / OpenAI-shaped
 (`anthropic/claude-…`); `x-api-key` listing returns Anthropic-shaped ids.
 
 Runtime: Python 3.11+, Node.js 22+, and Rust 1.85+ (same floors as the
-official SDKs). Rust examples use `tonia-sdk` **0.4.1** from
-[`tonia-router/rust-sdk`](https://github.com/tonia-router/rust-sdk) (`tag = "v0.4.1"`,
+official SDKs). Rust examples use `tonia-sdk` **0.4.4** from
+[`tonia-router/rust-sdk`](https://github.com/tonia-router/rust-sdk) (`tag = "v0.4.4"`,
 not crates.io).
 
 Copyright (c) 2026 tonia inc. Apache 2.0 — commercial use allowed. Keep `NOTICE`
@@ -34,6 +34,7 @@ if you copy these examples.
 | Native Live PCM (`mode=native`, `output_audio.delta`) | [`typescript/15-live-native.ts`](typescript/15-live-native.ts) | [`python/15_live_native.py`](python/15_live_native.py) | [`rust/src/bin/15_live_native.rs`](rust/src/bin/15_live_native.rs) |
 | Native Live **mic** (DEV full duplex) | [`live-mic/`](live-mic/) — `python live-mic/serve.py` then http://127.0.0.1:8765 | Latency HUD + `python live-mic/measure.py` (DEV; `--prod` when ready) |
 | Live STT (`gemini-3.5-transcribe-live`, PCM 16 kHz) | [`typescript/16-gemini-transcribe-live.ts`](typescript/16-gemini-transcribe-live.ts) | [`python/16_gemini_transcribe_live.py`](python/16_gemini_transcribe_live.py) | [`rust/src/bin/16_gemini_transcribe_live.rs`](rust/src/bin/16_gemini_transcribe_live.rs) |
+| System One (`/v1/systemone`, Jev noul / choice / score) | [`typescript/17-systemone.ts`](typescript/17-systemone.ts) | [`python/17_systemone.py`](python/17_systemone.py) | [`rust/src/bin/17_systemone.rs`](rust/src/bin/17_systemone.rs) |
 
 ## Run locally (before packages are published)
 
@@ -49,7 +50,7 @@ cd ..
 pip install -e ../python-sdk
 python python/01_basic_chat.py
 
-# Rust — tonia-sdk 0.4.1 from GitHub (not crates.io)
+# Rust — tonia-sdk 0.4.4 from GitHub (not crates.io)
 cd rust
 cargo run --bin 01_basic_chat
 ```
