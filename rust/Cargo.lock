@@ -947,7 +947,7 @@ dependencies = [
 [[package]]
 name = "tonia-sdk"
 version = "0.4.5"
-source = "git+https://github.com/tonia-router/rust-sdk?tag=v0.4.5#fbcd0903e682d00cdee9fc1d6c3ee206bed9d32b"
+source = "git+https://github.com/tonia-router/rust-sdk?tag=v0.4.5#2433107f40659433c68a380dfce2bc0d3f70d59c"
 dependencies = [
  "base64",
  "bytes",
