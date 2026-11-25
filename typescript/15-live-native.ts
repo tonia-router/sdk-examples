@@ -7,7 +7,7 @@
  *   npx tsx 15-live-native.ts
  *
  * PCM16 LE 24 kHz only. Recv output_audio.delta. Do not waitTurn,
- * sendText, or WAV. Example 14 stays cascaded text.
+ * sendText, or WAV.
  * Reconnect is a new billed session. Ask / clavarde has no microphone.
  */
 import { Tonia } from "@tonia-router/sdk";

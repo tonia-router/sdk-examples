@@ -6,7 +6,7 @@
     python 15_live_native.py
 
 PCM16 LE 24 kHz only. Recv output_audio.delta. Do not wait_turn,
-input_text, or WAV. Example 14 stays cascaded text.
+input_text, or WAV.
 Reconnect is a new billed session. Ask / clavarde has no microphone.
 """
 
