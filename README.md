@@ -8,8 +8,8 @@ id from that allowlist. That list is Bearer / OpenAI-shaped
 (`anthropic/claude-…`); `x-api-key` listing returns Anthropic-shaped ids.
 
 Runtime: Python 3.11+, Node.js 22+, and Rust 1.85+ (same floors as the
-official SDKs). Rust examples use `tonia-sdk` **0.4.4** from
-[`tonia-router/rust-sdk`](https://github.com/tonia-router/rust-sdk) (`tag = "v0.4.4"`,
+official SDKs). Rust examples use `tonia-sdk` **0.4.5** from
+[`tonia-router/rust-sdk`](https://github.com/tonia-router/rust-sdk) (`tag = "v0.4.5"`,
 not crates.io).
 
 Copyright (c) 2026 tonia inc. Apache 2.0 — commercial use allowed. Keep `NOTICE`
@@ -49,7 +49,7 @@ cd ..
 pip install -e ../python-sdk
 python python/01_basic_chat.py
 
-# Rust — tonia-sdk 0.4.4 from GitHub (not crates.io)
+# Rust — tonia-sdk 0.4.5 from GitHub (not crates.io)
 cd rust
 cargo run --bin 01_basic_chat
 ```
