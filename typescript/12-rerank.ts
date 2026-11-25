@@ -7,7 +7,7 @@
  *   export TONIA_API_KEY=tonia_sk_…
  *   npx tsx 12-rerank.ts
  *
- * The chat app never lists these ids. Use a portal API key.
+ * Ask and clavarde do not list these ids. Use a portal API key.
  */
 import { Tonia } from "@tonia-router/sdk";
 

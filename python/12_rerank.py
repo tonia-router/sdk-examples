@@ -6,7 +6,7 @@ A rerank search is not a web search.
     export TONIA_API_KEY=tonia_sk_…
     python 12_rerank.py
 
-The chat app never lists these ids. Use a portal API key.
+Ask and clavarde do not list these ids. Use a portal API key.
 """
 
 from __future__ import annotations

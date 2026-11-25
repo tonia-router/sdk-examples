@@ -2,7 +2,7 @@
  * System One on tenant `/v1/systemone`.
  *
  * Use the escape hatch. There is no typed `systemone.create` helper.
- * `stream` is not supported. The chat app never lists these ids.
+ * `stream` is not supported. Ask and clavarde do not list these ids. Use a portal API key.
  *
  *   export TONIA_API_KEY=tonia_sk_…
  *   npx tsx 17-systemone.ts

@@ -5,7 +5,7 @@ Send `model` + `input`. Do not POST lab `/v2/embed` or chat completions.
     export TONIA_API_KEY=tonia_sk_…
     python 11_embeddings.py
 
-The chat app never lists these ids. Use a portal API key.
+Ask and clavarde do not list these ids. Use a portal API key.
 """
 
 from __future__ import annotations
